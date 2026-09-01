@@ -514,3 +514,6 @@ input:focus-visible {
   padding: 8px;
 }
 .botao-fechar-menu svg { width: 26px; height: 26px; color: var(--teal-dark); }
+
+/* trava real de rolagem lateral (blobs decorativos) */
+html{overflow-x:clip}
