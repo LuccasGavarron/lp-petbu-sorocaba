@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Patinha PetBu">
+  <circle cx="32" cy="32" r="30" fill="#2F7E7B"/>
+  <ellipse cx="32" cy="40" rx="14" ry="11" fill="#FAF9F6"/>
+  <circle cx="18" cy="24" r="7" fill="#EE5A9E"/>
+  <circle cx="46" cy="24" r="7" fill="#EE5A9E"/>
+  <circle cx="12" cy="38" r="5.5" fill="#F2C230"/>
+  <circle cx="52" cy="38" r="5.5" fill="#F2C230"/>
+</svg>
