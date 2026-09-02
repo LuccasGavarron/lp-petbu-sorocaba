@@ -49,3 +49,5 @@ Objetivo: 2 versões de landing fiéis à identidade real, para apresentar à do
 ## Qualidade (obrigatório)
 
 Responsivo 375/768/1440 sem overflow horizontal; headings semânticos; alt text descritivo em todas as imagens; foco visível; contraste AA (rosa nunca como cor de texto pequeno sobre teal); `prefers-reduced-motion`; reveals suaves via IntersectionObserver apenas (sem biblioteca); sem console errors; checklist anti-vibecoded (nada de emoji como ícone na UI, ícones SVG próprios de traço arredondado, sem gradientes berrantes — gradiente só tom-sobre-tom do teal se precisar).
+
+> **02/09/2026:** as versões clássicas (v2.html/v3.html) e o seletor de versões foram removidos a pedido do cliente; o site publicado é só a Experiência (index.html).

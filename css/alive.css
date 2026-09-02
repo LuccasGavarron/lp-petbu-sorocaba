@@ -43,12 +43,6 @@ a{color:var(--teal)}
   font:800 1rem var(--corpo); text-decoration:none; padding:.9rem 1.7rem; border-radius:999px}
 .btn-rosa:hover{background:#D6438A}
 
-/* seletor de versões */
-.versoes{position:fixed; bottom:1.1rem; left:1.1rem; z-index:90; display:flex; gap:.3rem;
-  background:#fff; border-radius:999px; padding:.3rem; box-shadow:0 8px 24px rgba(20,65,63,.25)}
-.versoes a{padding:.35rem .8rem; border-radius:999px; font:800 .8rem var(--corpo); color:var(--teal-escuro); text-decoration:none}
-.versoes a.ativa{background:var(--teal); color:#fff}
-
 /* topo */
 .topo{position:absolute; top:0; left:0; right:0; z-index:20; padding:1.1rem 0}
 .topo .container{display:flex; align-items:center; justify-content:space-between; gap:1rem}
