@@ -25,6 +25,167 @@
     }, { threshold: 0.1 }).observe(hero);
   } else if (flutuante) { flutuante.classList.add('visivel'); }
 
+  /* EDUCA: carrossel automático dos cards do feed (não depende do GSAP) */
+  (function () {
+    var palco = document.querySelector('[data-carrossel]');
+    if (!palco) return;
+    var cards = Array.prototype.slice.call(palco.querySelectorAll('.educa-card'));
+    var n = cards.length;
+    if (!n) return;
+    var titulo = document.querySelector('[data-educa-titulo]');
+    var sub = document.querySelector('[data-educa-sub]');
+    var barra = document.querySelector('.educa-barra i');
+    var pontos = document.querySelector('.educa-pontos');
+    var INTERVALO = 4200;
+    var ativo = 0, timer = null, inicio = 0, restante = INTERVALO, rodando = false;
+    var autoplay = podeMotion;
+    var motivos = { hover: false, fora: 'IntersectionObserver' in window, oculto: document.hidden };
+    var meio = Math.floor(n / 2);
+
+    var dots = cards.map(function (_, i) {
+      var li = document.createElement('li');
+      li.addEventListener('click', function () { irPara(i); });
+      if (pontos) pontos.appendChild(li);
+      return li;
+    });
+
+    function passo() {
+      var w = cards[0].getBoundingClientRect().width;
+      return Math.min(w * 0.82, innerWidth * 0.3);
+    }
+    function render() {
+      var p = passo();
+      cards.forEach(function (card, i) {
+        var rel = (((i - ativo) % n) + n + meio) % n - meio;
+        var abs = Math.abs(rel);
+        card.dataset.pos = abs > 2 ? 'x' : String(rel);
+        var escala = rel === 0 ? 1 : abs === 1 ? 0.84 : 0.7;
+        card.style.transform = 'translateX(' + (rel * p) + 'px) translateY(' + (abs * 14) + 'px) rotate(' + (rel * 4) + 'deg) scale(' + escala + ')';
+        card.setAttribute('aria-hidden', rel === 0 ? 'false' : 'true');
+      });
+      dots.forEach(function (d, i) { d.classList.toggle('ativa', i === ativo); });
+      if (titulo) titulo.textContent = cards[ativo].dataset.titulo || '';
+      if (sub) sub.textContent = cards[ativo].dataset.texto || '';
+    }
+    function barraAnima(ms) {
+      if (!barra) return;
+      barra.style.transition = 'none';
+      barra.style.transform = 'scaleX(' + (1 - ms / INTERVALO) + ')';
+      void barra.offsetWidth;
+      barra.style.transition = 'transform ' + ms + 'ms linear';
+      barra.style.transform = 'scaleX(1)';
+    }
+    function congelarBarra() {
+      if (!barra) return;
+      var atual = getComputedStyle(barra).transform;
+      barra.style.transition = 'none';
+      barra.style.transform = atual;
+    }
+    function agendar(ms) {
+      clearTimeout(timer);
+      inicio = Date.now();
+      restante = ms;
+      barraAnima(ms);
+      timer = setTimeout(function () { ir(1); }, ms);
+    }
+    function sincronizar() {
+      var deve = autoplay && !motivos.hover && !motivos.fora && !motivos.oculto;
+      if (deve && !rodando) { rodando = true; agendar(restante > 0 ? restante : INTERVALO); }
+      else if (!deve && rodando) {
+        rodando = false;
+        clearTimeout(timer);
+        restante = Math.max(300, restante - (Date.now() - inicio));
+        congelarBarra();
+      }
+    }
+    function irPara(i) {
+      ativo = (i + n) % n;
+      render();
+      if (rodando) agendar(INTERVALO); else restante = INTERVALO;
+    }
+    function ir(delta) { irPara(ativo + delta); }
+
+    document.querySelectorAll('.educa-seta').forEach(function (b) {
+      b.addEventListener('click', function () { ir(Number(b.dataset.dir) || 1); });
+    });
+    palco.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { ir(1); e.preventDefault(); }
+      if (e.key === 'ArrowLeft') { ir(-1); e.preventDefault(); }
+    });
+    var toqueX = null;
+    palco.addEventListener('pointerdown', function (e) { toqueX = e.clientX; });
+    palco.addEventListener('pointerup', function (e) {
+      if (toqueX === null) return;
+      var dx = e.clientX - toqueX; toqueX = null;
+      if (Math.abs(dx) > 40) ir(dx < 0 ? 1 : -1);
+    });
+    palco.addEventListener('pointerenter', function () { motivos.hover = true; sincronizar(); });
+    palco.addEventListener('pointerleave', function () { motivos.hover = false; sincronizar(); });
+    palco.addEventListener('focusin', function () { motivos.hover = true; sincronizar(); });
+    palco.addEventListener('focusout', function () { motivos.hover = false; sincronizar(); });
+    document.addEventListener('visibilitychange', function () { motivos.oculto = document.hidden; sincronizar(); });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) { motivos.fora = !es[0].isIntersecting; sincronizar(); }, { threshold: 0.3 }).observe(palco);
+    }
+    addEventListener('resize', render);
+    render();
+    sincronizar();
+  })();
+
+  /* FEED: grade infinita (estilo portal de jogos) — carrega 12 por vez conforme o scroll */
+  (function () {
+    var caixa = document.querySelector('[data-feed]');
+    var posts = window.PETBU_FEED;
+    if (!caixa || !posts || !posts.length) return;
+    var grade = caixa.querySelector('.feed-grade');
+    var sentinela = caixa.querySelector('.feed-sentinela');
+    var fim = caixa.querySelector('.feed-fim');
+    var total = caixa.querySelector('[data-feed-total]');
+    if (total && window.PETBU_FEED_TOTAL) total.textContent = window.PETBU_FEED_TOTAL;
+    var LOTE = 12, cursor = 0, carregando = false;
+
+    function tile(p, k) {
+      var li = document.createElement('li');
+      li.className = 'feed-post';
+      var a = document.createElement('a');
+      a.href = p.u; a.target = '_blank'; a.rel = 'noopener';
+      a.setAttribute('aria-label', p.t + ' (abre no Instagram)');
+      var img = document.createElement('img');
+      img.src = p.i; img.alt = ''; img.loading = k < 6 ? 'eager' : 'lazy'; img.decoding = 'async';
+      img.width = 560; img.height = 560;
+      a.appendChild(img);
+      if (p.v) {
+        var play = document.createElement('span');
+        play.className = 'play';
+        play.innerHTML = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1l9 5-9 5z"/></svg>';
+        a.appendChild(play);
+      }
+      var cap = document.createElement('figcaption');
+      cap.textContent = p.t;
+      a.appendChild(cap);
+      li.appendChild(a);
+      return li;
+    }
+    function lote() {
+      if (carregando || cursor >= posts.length) return;
+      carregando = true;
+      var frag = document.createDocumentFragment();
+      var novos = [];
+      for (var k = cursor; k < Math.min(cursor + LOTE, posts.length); k++) { var li = tile(posts[k], k); frag.appendChild(li); novos.push(li); }
+      cursor += LOTE;
+      grade.appendChild(frag);
+      novos.forEach(function (li, j) { setTimeout(function () { li.classList.add('in'); }, 40 * j); });
+      carregando = false;
+      if (cursor >= posts.length) { sentinela.hidden = true; fim.hidden = false; }
+    }
+    lote();
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) { if (es[0].isIntersecting) lote(); }, { rootMargin: '600px 0px' }).observe(sentinela);
+    } else {
+      while (cursor < posts.length) lote();
+    }
+  })();
+
   if (!temGsap || !podeMotion) return;
   gsap.registerPlugin(ScrollTrigger);
   body.classList.remove('sem-motion');
@@ -76,20 +237,6 @@
         }
       });
       etapas[0].classList.add('ativa'); marcas[0].classList.add('ativa');
-    }
-  }
-
-  /* EDUCA: galeria horizontal guiada pelo scroll */
-  if (desktop) {
-    var faixa = document.querySelector('.educa-faixa');
-    var wrap = document.querySelector('.educa-trilho');
-    if (faixa && wrap) {
-      body.classList.remove('sem-pin-galeria');
-      gsap.to(faixa, {
-        x: function () { return -Math.max(0, faixa.scrollWidth - innerWidth + 90); },
-        ease: 'none',
-        scrollTrigger: { trigger: wrap, start: 'top top', end: 'bottom bottom', scrub: 0.35, invalidateOnRefresh: true }
-      });
     }
   }
 

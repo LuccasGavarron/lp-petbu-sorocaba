@@ -12,7 +12,7 @@
   <meta property="og:locale" content="pt_BR">
   <link rel="stylesheet" href="css/alive.css">
 </head>
-<body class="sem-motion sem-pin sem-pin-galeria">
+<body class="sem-motion sem-pin">
 <a class="pular" href="#servicos">Pular para o conteúdo</a>
 
 <header class="topo">
@@ -45,7 +45,7 @@
     <div class="hero-conteudo">
       <span class="rotulo">Pet shop &amp; clínica veterinária · Vila Formosa, Sorocaba</span>
       <h1 class="hero-tipo" aria-label="PetBu">Pet<span class="bu">Bu</span></h1>
-      <p class="hero-sub">Banho &amp; tosa, consultas, vacinas e lojinha, tudo com o carinho de um negócio de bairro que conhece o seu pet pelo nome.</p>
+      <p class="hero-sub">Banho &amp; tosa, consultas, vacinas e lojinha, tudo no mesmo endereço e com gente que conhece o seu pet pelo nome.</p>
       <div class="hero-acoes">
         <a class="btn-wa" href="https://wa.me/5515991668744?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20PetBu%20e%20quero%20agendar%20um%20hor%C3%A1rio." target="_blank" rel="noopener">
           <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16 3C9.4 3 4 8.3 4 14.9c0 2.1.6 4.1 1.6 5.9L4 29l8.4-1.6c1.7.9 3.6 1.4 5.6 1.4 6.6 0 12-5.3 12-11.9S22.6 3 16 3zm5.5 16.4c-.3.7-1.5 1.3-2 1.4-.5.1-1.2.2-1.9-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3.1s.7-2.2 1-2.5c.3-.3.6-.4.8-.4h.6c.2 0 .5-.1.7.5.3.6.9 2.1 1 2.3.1.2.1.4 0 .6-.1.2-.2.3-.3.5l-.5.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.1 1 2.1 1.3 2.4 1.5.3.1.4.1.6-.1.1-.1.7-.8.9-1.1.2-.4.4-.3.7-.2.2.1 1.7.8 2 1 .3.2.5.3.6.3.1.1.1.7-.2 1.4z"/></svg>
@@ -117,23 +117,55 @@
     </div>
   </section>
 
-  <!-- ======== EDUCA: cards reais do feed ======== -->
+  <!-- ======== EDUCA: carrossel automático dos cards reais do feed ======== -->
   <section class="educa" id="educa" aria-labelledby="titulo-educa">
-    <div class="educa-trilho">
-      <div class="educa-fixa">
-        <div class="educa-titulo reveal">
-          <h2 id="titulo-educa">PetBu <em>Educa</em></h2>
-          <p>Conteúdo de verdade, direto do nosso Instagram.</p>
-        </div>
-        <div class="educa-faixa">
-          <figure class="educa-item"><img src="assets/img/post-01.jpg" alt="Card do Instagram: os 7 diferenciais do banho e tosa da PetBu" loading="lazy" width="640" height="640"><figcaption>Nossos diferenciais</figcaption></figure>
-          <figure class="educa-item"><img src="assets/img/post-05.jpg" alt="Card do Instagram: seu cachorro não quer comer? Veja o que fazer" loading="lazy" width="512" height="640"><figcaption>Apetite do pet</figcaption></figure>
-          <figure class="educa-item"><img src="assets/img/post-09.jpg" alt="Card do Instagram: o que pode estar por trás da perda de fome do seu pet" loading="lazy" width="512" height="640"><figcaption>Sinais de alerta</figcaption></figure>
-          <figure class="educa-item"><img src="assets/img/post-10.jpg" alt="Card do Instagram: como corrigir comportamentos indesejados do seu cão" loading="lazy" width="512" height="640"><figcaption>Comportamento</figcaption></figure>
-          <figure class="educa-item"><img src="assets/img/post-04.jpg" alt="Card do Instagram: cuidados com animais com deficiência visual" loading="lazy" width="512" height="640"><figcaption>Cuidado inclusivo</figcaption></figure>
-        </div>
-        <p class="educa-cta"><a href="https://www.instagram.com/petbu.shop.vet/" target="_blank" rel="noopener">Seguir @petbu.shop.vet →</a></p>
+    <div class="container educa-topo">
+      <div class="educa-titulo reveal">
+        <h2 id="titulo-educa">PetBu <em>Educa</em></h2>
+        <p>Dicas de cuidado direto do nosso Instagram, uma de cada vez.</p>
       </div>
+      <div class="educa-controles">
+        <button class="educa-seta" type="button" data-dir="-1" aria-label="Post anterior">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <button class="educa-seta" type="button" data-dir="1" aria-label="Próximo post">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="educa-palco" data-carrossel aria-roledescription="carrossel" aria-label="Posts do PetBu Educa" tabindex="0">
+      <ul class="educa-lista">
+        <li class="educa-card" data-titulo="Nossos 7 diferenciais" data-texto="O que faz o banho e tosa da PetBu ser tranquilo, do silêncio ao perfume."><img src="assets/img/post-01.jpg" alt="Card do Instagram: os 7 diferenciais do banho e tosa da PetBu" loading="lazy" width="640" height="640"></li>
+        <li class="educa-card" data-titulo="Vacinação FeLV" data-texto="Campanha de vacinação contra a leucemia felina: proteção para o seu gato e para os outros gatos."><img src="assets/img/post-03.jpg" alt="Card do Instagram: campanha de vacinação FeLV, proteja seu gato contra a leucemia felina" loading="lazy" width="640" height="640"></li>
+        <li class="educa-card" data-titulo="Apetite do pet" data-texto="Seu cachorro não quer comer? O que observar antes de se preocupar."><img src="assets/img/post-05.jpg" alt="Card do Instagram: seu cachorro não quer comer? Veja o que fazer" loading="lazy" width="512" height="640"></li>
+        <li class="educa-card" data-titulo="Ele te segue até o banheiro?" data-texto="O que esse comportamento tão comum diz sobre o vínculo com você."><img src="assets/img/post-06.jpg" alt="Card do Instagram: por que seu cachorro te segue até o banheiro?" loading="lazy" width="512" height="640"></li>
+        <li class="educa-card" data-titulo="Comida humana, não" data-texto="Por que é importante não dividir o seu prato com o pet."><img src="assets/img/post-08.jpg" alt="Card do Instagram: por que é importante não dar comida humana para pets?" loading="lazy" width="512" height="640"></li>
+        <li class="educa-card" data-titulo="Sinais de alerta" data-texto="O que pode estar por trás da perda de fome do seu pet."><img src="assets/img/post-09.jpg" alt="Card do Instagram: o que pode estar por trás da perda de fome do seu pet" loading="lazy" width="512" height="640"></li>
+        <li class="educa-card" data-titulo="Comportamento" data-texto="Como corrigir comportamentos indesejados do seu cão, sem briga."><img src="assets/img/post-10.jpg" alt="Card do Instagram: como corrigir comportamentos indesejados do seu cão" loading="lazy" width="512" height="640"></li>
+        <li class="educa-card" data-titulo="Cuidado inclusivo" data-texto="Quais são os cuidados com animais com deficiência visual."><img src="assets/img/post-04.jpg" alt="Card do Instagram: cuidados com animais com deficiência visual" loading="lazy" width="512" height="640"></li>
+      </ul>
+    </div>
+
+    <div class="container educa-rodape">
+      <p class="educa-legenda" aria-live="polite"><b data-educa-titulo></b><span data-educa-sub></span></p>
+      <div class="educa-ritmo">
+        <span class="educa-barra" aria-hidden="true"><i></i></span>
+        <ol class="educa-pontos" aria-hidden="true"></ol>
+      </div>
+      <a class="btn-rosa" href="https://www.instagram.com/petbu.shop.vet/" target="_blank" rel="noopener">Seguir @petbu.shop.vet</a>
+    </div>
+
+    <!-- Feed completo: grade que vai carregando mais posts conforme você desce -->
+    <div class="container feed" data-feed>
+      <div class="feed-topo">
+        <h3>Nosso feed</h3>
+        <p><span data-feed-total>151</span> posts no Instagram. Continue descendo que a grade vai carregando.</p>
+      </div>
+      <ul class="feed-grade" aria-label="Posts recentes do Instagram da PetBu"></ul>
+      <div class="feed-sentinela" aria-hidden="true"><span class="feed-carregando">carregando mais posts</span></div>
+      <p class="feed-fim" hidden>Isso foi tudo que a gente publicou por aqui. <a href="https://www.instagram.com/petbu.shop.vet/" target="_blank" rel="noopener">O resto está no Instagram.</a></p>
+      <noscript><p><a href="https://www.instagram.com/petbu.shop.vet/" target="_blank" rel="noopener">Ver o feed completo no Instagram</a></p></noscript>
     </div>
   </section>
 
@@ -152,8 +184,8 @@
   <section class="acolhe" id="acolhe" aria-labelledby="titulo-acolhe">
     <div class="container">
       <span class="rotulo reveal">A casa</span>
-      <h2 id="titulo-acolhe" class="reveal">Um pet shop de bairro, do jeitinho que seu pet merece.</h2>
-      <p class="reveal">A PetBu é um negócio de mulheres empreendedoras na Vila Formosa. Aqui, cada cliente é atendido pelo nome — o seu e o do seu pet.</p>
+      <h2 id="titulo-acolhe" class="reveal">Um pet shop do jeitinho que seu pet merece.</h2>
+      <p class="reveal">A PetBu é um negócio de mulheres empreendedoras na Vila Formosa. Aqui, cada cliente é atendido pelo nome: o seu e o do seu pet.</p>
       <div class="acolhe-selos reveal">
         <span class="selo"><i></i>Negócio liderado por mulheres</span>
         <span class="selo"><i></i>Todos os pets e famílias bem-vindos</span>
@@ -205,6 +237,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script src="js/feed-data.js" defer></script>
 <script src="js/alive.js" defer></script>
 </body>
 </html>
